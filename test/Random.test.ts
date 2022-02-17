@@ -32,12 +32,12 @@ describe("Fund setup", function () {
 
     // Deploy the wrapper ERC721
     wrapperFactory = await ethers.getContractFactory("Wrapper721");
-    wrapper = await wrapperFactory.deploy("tmp", "tmp", collection.address);
+    wrapper = await wrapperFactory.deploy("DogeFinStarship1", "DFS1");
     console.log("wrapper Address: ", wrapper.address);
   });
 
   describe("Mint some NFTs", function () {
-    it("Should have minted 3 NFTs", async function () {
+    it("Should have minted 1 NFTs", async function () {
       await collection.createCollectible();
       const newToken = await collection.tokenURI(0);
       console.log("newCollection ID: ", newToken);
@@ -48,8 +48,8 @@ describe("Fund setup", function () {
     });
 
     it("Should wrap token", async function () {
-      await wrapper.wrapToken(0);
-      const wrapped = await wrapper.wrappedToken(0);
+      await wrapper.wrapToken(collection.address, 0);
+      const wrapped = await wrapper.wrappedToken(collection.address, 0);
       console.log("wrapped: ", wrapped);
 
       expect(wrapped).to.equal(1);
@@ -71,7 +71,7 @@ describe("Fund setup", function () {
     // });
 
     it("Should show original owner through wrapper", async function () {
-      const ownerCheck = await wrapper.ownerOf(0);
+      const ownerCheck = await wrapper.ownerOf(collection.address, 0);
       console.log("ownerCheck 0: ", ownerCheck);
 
       expect(ownerCheck).to.equal(owner.address);
